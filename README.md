@@ -14,10 +14,10 @@ the COVID TRACKER website is devloped to help the people to analysis the covid d
 which can the government and people regarding all the posiibilities in.Covid Tracker describes all catageories of the covid data which includes
 
 1.Confiremd <br>
-2.Recovered \n
-3.Active \n
-4.Deaseased \n
-5.Vacinated \n
+2.Recovered <br>
+3.Active <br>
+4.Deaseased <br>
+5.Vacinated <br>
 
 The data for the covid tracker has been taken from the github website https://data.covid19india.org/ 
 the data support will end on 30 october         
