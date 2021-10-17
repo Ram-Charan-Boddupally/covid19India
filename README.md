@@ -13,11 +13,11 @@ Link to covid data visulizer : https://covid-tracker-visulizer.herokuapp.com/Hom
 the COVID TRACKER website is devloped to help the people to analysis the covid data more accurately and easily
 which can the government and people regarding all the posiibilities in.Covid Tracker describes all catageories of the covid data which includes
 
-1.Confiremd
-2.Recovered
-3.Active
-4.Deaseased
-5.Vacinated
+1.Confiremd \n
+2.Recovered \n
+3.Active \n
+4.Deaseased \n
+5.Vacinated \n
 
 The data for the covid tracker has been taken from the github website https://data.covid19india.org/ 
 the data support will end on 30 october         
