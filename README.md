@@ -1,44 +1,27 @@
-# Python: Getting Started
+<div>
+        <h1> Link to covid data visulizer : https://covid-tracker-visulizer.herokuapp.com/Home/ 
+        <p>
+            <h2>CORONA VIRUS</h2>
+            Coronavirus disease (COVID-19) is an infectious disease caused by the SARS-CoV-2 
+            virusMost people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment. However, some will become seriously ill               and require medical attention.
 
-A barebones Django app, which can easily be deployed to Heroku.
-
-This application supports the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
-
-## Running Locally
-
-Make sure you have Python 3.9 [installed locally](https://docs.python-guide.org/starting/installation/). To push to Heroku, you'll need to install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli), as well as [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
-
-```sh
-$ git clone https://github.com/heroku/python-getting-started.git
-$ cd python-getting-started
-
-$ python3 -m venv getting-started
-$ pip install -r requirements.txt
-
-$ createdb python_getting_started
-
-$ python manage.py migrate
-$ python manage.py collectstatic
-
-$ heroku local
-```
-
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
-```sh
-$ heroku create
-$ git push heroku main
-$ heroku run python manage.py migrate
-$ heroku open
-```
-or
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-## Documentation
-
-For more information about using Python on Heroku, see these Dev Center articles:
-
-- [Python on Heroku](https://devcenter.heroku.com/categories/python)
+            The virus can spread from an infected person’s mouth or nose in small liquid particles when they cough,
+            sneeze, speak, sing or breathe. These particles range from larger respiratory droplets to smaller aerosols.
+            You can be infected by breathing in the virus if you are near someone who has COVID-19, or by touching a 
+            contaminated surface and then your eyes, nose or mouth. The virus spreads more easily indoors and in crowded settings.
+        </p>
+        <p>
+            the COVID TRACKER website is devloped to help the people to analysis the covid data more accurately and easily
+            which can the government and people regarding all the posiibilities in.Covid Tracker describes all catageories of the covid data which includes
+            <ul>
+                <li>Confiremd</li>
+                <li>Recovered</li>
+                <li>Active</li>
+                <li>Deaseased</li>
+                <li>Vacinated</li>
+            </ul>   
+        </p>
+        <p>
+            The data for the covid tracker has been taken from the github api           
+        </p>
+    </div>
