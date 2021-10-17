@@ -1,5 +1,5 @@
 <div>
-        <h1> Link to covid data visulizer : https://covid-tracker-visulizer.herokuapp.com/Home/ 
+        <h3> Link to covid data visulizer : https://covid-tracker-visulizer.herokuapp.com/Home/ </h3> 
         <p>
             <h2>CORONA VIRUS</h2>
             Coronavirus disease (COVID-19) is an infectious disease caused by the SARS-CoV-2 
@@ -22,6 +22,7 @@
             </ul>   
         </p>
         <p>
-            The data for the covid tracker has been taken from the github api           
+            The data for the covid tracker has been taken from the github website https://data.covid19india.org/ 
+            the data support will end on 30 october         
         </p>
-    </div>
+</div>
