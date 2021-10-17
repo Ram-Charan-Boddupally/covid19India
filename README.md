@@ -13,7 +13,7 @@ Link to covid data visulizer : https://covid-tracker-visulizer.herokuapp.com/Hom
 the COVID TRACKER website is devloped to help the people to analysis the covid data more accurately and easily
 which can the government and people regarding all the posiibilities in.Covid Tracker describes all catageories of the covid data which includes
 
-1.Confiremd \n
+1.Confiremd <br>
 2.Recovered \n
 3.Active \n
 4.Deaseased \n
