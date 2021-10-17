@@ -1,0 +1,160 @@
+a{
+    text-decoration: none;
+    color:antiquewhite;
+}
+body{
+    margin:0px;
+    margin-left: 45px;
+    padding:0px 5px 0px 5px;
+    background-color: rbga(0,0,0);
+    /* background-color: rgba(26,26,26,0.98); */
+    color:aliceblue;   
+}
+
+.data-date{
+    position: relative;
+    color:aqua;
+    text-align:center;
+}
+div.covid-main-data{
+    height: 105px;
+    display:flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.covid-data{
+    border:1px solid blue;
+    box-shadow: 3px 3px 3px red;
+    border-collapse: collapse;
+    text-align: center;
+    font-style:oblique;
+}
+
+div.container{
+    position:relative;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 992px) {
+    .data-date{
+        font-size: 20px;
+        margin: 25px;
+        margin-top:75px;
+        right:30px;
+    }
+    .covid-data{
+        height: 80px;
+        width: 160px;
+        margin-right: 90px;
+        margin-top: 5px;
+        padding: 5px;
+    }
+    
+    
+}
+
+@media only screen and (max-width: 600px) {
+    /* mobile version of the website is not yet fully devloped */
+}
+
+.main-loc.vacinated a{
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+}
+
+.covid-data.sub-loc{
+    margin-right: 20px;
+    margin-bottom: 100px;
+}
+.covid-data .data-title{
+    font-weight:bolder;
+    text-shadow:2px 2px 3px  red,
+                5px 5px 15px  blue;
+}
+
+.covid-data .count{
+    font-family: 'Times New Roman', Times, serif;
+    line-height:5px;
+    font-size: 20px;
+    font-weight:900;
+}
+
+/* map and related inforamtion  */
+
+.sub-loc-data-container{
+    display:flex;
+}
+#location-title{
+    font-size: 35px;
+    text-align: left;
+    padding:10px;
+    margin-bottom: 2px;
+    margin-left:15px;
+}
+#location-map{
+    box-sizing: border-box;
+    padding-left:70px;
+    padding-top:45px;
+    padding-right: 30px;
+    padding-bottom: 35px;
+    width: 620px; 
+    height: 560px;
+    margin: 50px;
+    margin-left: 20px; 
+ }
+/* data in a map  */
+g{
+    margin:25px;
+    stroke:aqua;
+}
+
+
+section.cat-covid-data{
+    margin-top:130px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+section.cat.location-name{
+    position:absolute;
+    right: 160px;
+    top:130px;
+    border: 1px solid orange;
+    width: 350px;
+    height: 40px;
+    padding:8px;
+    font-size:30px;
+    text-align:center;
+    border-radius:10px;
+}
+.cat .covid-data{
+    margin-bottom: 5px;
+}
+
+.cat .covid-data.vacinated{
+    bottom:50%;
+}
+
+/* vizulaization charts */
+div.visulize{
+    width:100%;
+    display: flex;
+}
+.visualization-title{
+    position: relative;
+    top:-15px;
+    margin-left: 40%;
+    font-style: italic;
+    text-align: center;
+    font-size: 25px;
+    padding-top: 5px;
+}
+
+
+
+/* footer  */
+footer{
+    height: 30px;
+}

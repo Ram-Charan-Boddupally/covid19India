@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' type='image/x-icon' href="{% static 'covidvisulizer/images/favicon.ico' %}" >
+    <title>{{Document}}</title>
+    <style>
+        a{
+            text-decoration: none;
+            color:antiquewhite;
+        }
+
+        body{
+            margin:0px;
+            padding:0px 5px 0px 5px;
+            background-color: rgba(0,0,0);
+            color:aliceblue   
+        }
+        div.container{
+            position:relative;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .data-date{
+            position: relative;
+            color:aqua;
+            font-size: 20px;
+            text-align:center;
+            margin: 25px;
+            margin-top:75px;
+            right:30px;
+        }
+        .category{
+            
+            border:1px solid white;
+            height:130px;
+            width: 200px;
+            display: inline-block;
+            margin-right:10px;
+            margin-left:100px;
+            margin-top:35px;
+        }
+        .category .title{
+            border-bottom:1px solid white;
+            padding-top:35px;
+        }
+
+        /* graphs */
+          /* graph 3  */ 
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+    </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+</head>
+<body>
+    <h1><a class='home-page' href="{% url 'covidVisulizer:mainVisualizer' %}">COVID &nbsp;TRACKER</a></h1>
+
+    <div class="data-date"> {{presentDate.date}} &nbsp; ({{presentDate.weekday}})</div>
+
+    <div class="data-date">{{catageoryData.location}}  &nbsp;({{catageory}})</div>
+    <div class="container">
+        <canvas id='bar-chart'></canvas>
+    </div>
+
+    {% block extraContent %}
+        
+    {% endblock %}
+ 
+    <script>
+
+        let chartElement = document.getElementById("bar-chart")
+        // let subLocCatDataToday = {{subLocCatDataToday|safe}}
+        let data = {{catageoryData|safe}}
+        let labels = data['labels']
+        let catageoryData = data['data']
+        let catageory = "{{catageory}}"
+
+        // dataset for covid
+        const covidCatageorydata = { labels: labels,
+                        datasets: [
+                            {
+                            label: catageory,
+                            data: catageoryData,
+                            borderColor: "red",
+                            backgroundColor: "yellow",
+                            }, ]
+                        };
+
+
+        // configuration
+        const config = {
+            type: 'bar',
+            data: covidCatageorydata,
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Catageory chart data'
+                }
+                }
+            },
+            };
+            var barChart = new Chart(chartElement, config);
+
+</script>
+
+</body>
+</html>

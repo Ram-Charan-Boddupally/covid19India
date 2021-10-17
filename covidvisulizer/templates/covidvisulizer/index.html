@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' type='image/x-icon' href="{% static 'covidvisulizer/images/favicon.ico' %}" >
+    <link rel="stylesheet" href="{% static 'covidvisulizer/css/stylesheet.css' %}">
+    <!-- d3.js java script library -->
+    <script src="{% static 'covidvisulizer/js/d3.min.js' %}"></script>
+    <!-- library for loading maps topojson maps -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+
+
+    <style>
+
+        svg {
+        font-family: Sans-Serif, Arial;
+        }
+        .line {
+        stroke-width: 2;
+        fill: none;
+        }
+        .axis path {
+        stroke: orange;
+        }
+    </style>
+
+    <title>Covid Tracker</title>
+</head>
+<body style="background-color: rbga(0,0,0);">
+    <h1><a class='home-page' href="{% url 'covidVisulizer:mainVisualizer' %}">COVID &nbsp;TRACKER</a></h1>
+    <div class="container">
+
+        <div class="data-date"> {{presentDate.date}} &nbsp; ({{presentDate.weekday}})</div>
+        <div class="covid-main-data">                
+            
+            <div class="covid-data main-loc recovered">
+                <a href="{% url 'covidVisulizer:catageoryVisulizer' 'Recovered-' %}"><div class="data-title">RECOVERED</div></a>
+                <div class="count">
+                    <div class="present-count recovered"></div>
+                    <div class="total-count recovered" ><p>{{locationCatageoryData.Recovered}}</p> </div>
+                </div>
+            </div>
+            <div class="covid-data main-loc active">
+                <a href="{% url 'covidVisulizer:catageoryVisulizer' 'Active-' %}"><div class="data-title">ACTIVE</div></a>
+                <div class="count">
+                    <div class="total-count active" style="padding-top:20px;"> <p>{{locationCatageoryData.Active}}</p> </div>
+                </div>
+            </div>
+            <div class="covid-data main-loc confiremd">
+                <a href="{% url 'covidVisulizer:catageoryVisulizer' 'Confirmed-' %}"><div class="data-title">CONFIRMED</div></a>
+                <div class="count">
+                    <div class="present-count confiremd"></div>
+                    <div class="total-count confirmed"> <p>{{locationCatageoryData.Confirmed}}</p> </div>
+                </div>
+            </div>
+            <div class="covid-data main-loc deseased">
+                <a href="{% url 'covidVisulizer:catageoryVisulizer' 'Deceased-' %}"><div class="data-title">DEASEASED</div></a>
+                <div class="count">
+                    <div class="present-count deseased"></div>
+                    <div class="total-count deseased"> <p>{{locationCatageoryData.Deaths}}</p> </div>
+                </div>
+            </div>
+            <div class="covid-data main-loc vacinated">
+                <a href="{% url 'covidVisulizer:catageoryVisulizer' 'Vacinated-' %}"><div class="data-title">VACINATED</div></a>
+                <div class="count">
+                    <div class="present-count vacinated"></div>
+                    <div class="total-count vacinated"> <p>{{locationCatageoryData.Vacinated}}</p> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- for map and other related info -->
+    <div class="container">
+        <div class="mini-container">
+            <h2 id='location-title'>{{locationCatageoryData.location}}</h2>
+            <div class="sub-loc-data-container">
+                <div class="location">  
+                    <div id='location-map'></div>
+                </div>
+
+                <!-- sub location data visualization -->
+                <section class="cat location-name">LOCATION NAME</section>
+                <section class="cat-covid-data">
+                    <section class="cat">
+                        <div class="covid-data recovered sub-loc">
+                            <div class="data-title">RECOVERED</div>
+                            <div class="count">
+                                <div class="present-count recovered"><p></p></div>
+                                <div class="total-count total-count-sub-loc recovered"> <p></p> </div>
+                            </div>
+                        </div>
+                        <div class="covid-data active sub-loc">
+                            <div class="data-title">ACTIVE</div>
+                            <div class="count">
+                                <div class="total-count total-count-sub-loc active" style="padding-top:20px;"> <p></p> </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="cat">  
+                        <div class="covid-data confiremd sub-loc">
+                            <div class="data-title">CONFIRMED</div>
+                            <div class="count">
+                                <div class="present-count confiremd"><p></p></div>
+                                <div class="total-count total-count-sub-loc confirmed"> <p></p> </div>
+                            </div>
+                        </div>
+                        <div class="covid-data deseased sub-loc">
+                            <div class="data-title">DEASEASED</div>
+                            <div class="count">
+                                <div class="present-count deseased"><p></p></div>
+                                <div class="total-count total-count-sub-loc deseased"> <p></p> </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="cat">
+                        <div class="covid-data vacinated sub-loc">
+                            <div class="data-title">VACINATED</div>
+                            <div class="count">
+                                <div class="present-count vacinated"><p></p></div>
+                                <div class="total-count total-count-sub-loc vacinated"> <p></p> </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </div>
+    </div>
+    <hr> 
+
+    <div class="container">
+        <h3 style="margin-bottom:50px;">VIZULATIZATION CHARTS</h3>
+        <div class="sub-container">
+            <div class="visualization-container">
+                <div class="visulize">
+                    <h2 class="visualization-title" style="margin-right:50px">{{locationCatageoryData.location}}</h2>
+                </div>
+
+                <div class="container">
+                    <canvas id="chart" style="width:100%;"> </canvas>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <hr>
+    <footer>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <div></div>
+        <div class="social-icons" >
+            <span style="font-size:22px">website created by : <a href="https://www.linkedin.com/in/ram-charan-boddupally/">Ram Charan Boddupally</a></span>
+
+            <span style="position:absolute;right:120px;">
+            <a href="https://www.linkedin.com/in/ram-charan-boddupally/"><ul class="fa fa-linkedin-square" style="font-size:22px">&nbsp;LinkedIn</ul></a>
+            <a href="https://github.com/Ram-Charan-boddupally"><ul class="fa fa-github" style="font-size:22px">&nbsp;Github</ul></a>
+            <a href="mailto:ramcharanb31@gmail.com"><ul class="fa fa-envelope" style="font-size:22px">&nbsp;Mail</ul></a>
+            </span>
+        </div>
+    </footer>
+
+    <script>
+        // this block is used for initializing of the topojson
+        // this collects the topojson map and visualizes it using topojson
+
+        let subLocCoviddata = {{subLocationData|safe}};
+        let locName = document.getElementById('location-title').textContent.toLocaleLowerCase();
+
+        let path = "{% static 'covidvisulizer/images/projected_maps/locationName.json' %}"
+        path = "{% static 'covidvisulizer/images/projected_maps/locationName.json' %}".replace("locationName",locName.replaceAll(" ",""))
+        console.log(path)
+        d3.json(path).then(function(data){
+            var width = 720;
+            var height = 620;
+
+            var svg = d3.select("#location-map").append("svg")
+                                                .attr("width", width)
+                                                .attr("height", height)
+                                                .append("g")
+                                                
+            var projection = d3.geoMercator().scale([1]);
+            let dataSvg;
+            if(Object.keys(data.objects).includes("states")){
+
+                dataSvg = svg.selectAll("path")
+                .data(topojson.feature(data, data.objects.states).features)
+                .enter()
+                .append("a")
+                .attr("href",function(d){
+                    let locUrl = "{% url 'covidVisulizer:subLocVisualizer' 'locName' %}"
+                                 .replace('locName',d.id.replaceAll(" ","+"))
+                    return locUrl;
+                })
+                .append("path")
+                .attr("class","states")
+                .attr("id",function(d){
+                    return d.id;
+                    })
+            }else{
+                 dataSvg = svg.selectAll("path")
+                .data(topojson.feature(data, data.objects.districts).features)
+                .enter()
+                .append("path")
+                .attr("class","states")
+                .attr("id",function(d){
+                    return d.properties.district;
+                })
+            }
+
+            dataSvg.attr("d", d3.geoPath())
+                .on("mouseover",function(){
+                    d3.select(this).style("fill","#00CCFF");
+                    d3.select(".cat.location-name").text(this.id);
+                    console.log(subLocCoviddata)
+                    for(let locationName in subLocCoviddata){
+                        if(locationName == this.id){
+                            d3.selectAll(".cat .total-count-sub-loc.recovered").select('p').text(subLocCoviddata[locationName].Recovered.toLocaleString('en-IN'));
+                            d3.selectAll(".cat .total-count-sub-loc.active").select('p').text(subLocCoviddata[locationName].Active.toLocaleString('en-IN'));
+                            d3.selectAll(".cat .total-count-sub-loc.confirmed").select('p').text(subLocCoviddata[locationName].Confirmed.toLocaleString('en-IN'));
+                            d3.selectAll(".cat .total-count-sub-loc.deseased").select('p').text(subLocCoviddata[locationName].Deaths.toLocaleString('en-IN'));
+                            d3.selectAll(".cat .total-count-sub-loc.vacinated").select('p').text(subLocCoviddata[locationName].Vacinated.toLocaleString('en-IN'));
+                        }
+                    }
+                }).on("mouseout",function(){
+                    d3.select(this).style("fill","black");
+                    d3.select(".cat.location-name").text("LOCATION NAME");
+                    d3.selectAll(".cat .total-count-sub-loc.recovered").select('p').text(" ");
+                    d3.selectAll(".cat .total-count-sub-loc.active").select('p').text(" ");
+                    d3.selectAll(".cat .total-count-sub-loc.confirmed").select('p').text(" ");
+                    d3.selectAll(".cat .total-count-sub-loc.deseased").select('p').text(" ");
+                    d3.selectAll(".cat .total-count-sub-loc.vacinated").select('p').text(" ");
+                });
+        });
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script>         
+        let countElement = document.querySelectorAll(".main-loc .total-count p")
+        let queryLength = countElement.length;
+        for (let element = 0; element < queryLength; element++) {
+            countElement[element].innerHTML = parseInt(countElement[element].innerHTML).toLocaleString('en-IN');
+        }
+
+        let queryElements = document.querySelectorAll("div.covid-data.main-loc a")
+        queryLength = queryElements.length;
+        for(var element=0;element<queryLength;element++){
+            queryElements[element].href = queryElements[element].href.replace('-','-*'.replace('*',locName.replaceAll(" ",'_')))        
+        }
+
+        let dateWiseData = {{mainLocDateWiseCount|safe}}
+        // console.log(dateWiseData)
+
+        let chart = document.getElementById('chart').getContext('2d');
+
+        var dataFirst = {
+            label: "Confirmed",
+            data: dateWiseData['Confirmed'],
+            lineTension: 0,
+            fill: false,
+            borderColor: 'red'
+        };
+
+        var dataSecond = {
+            label: "Recovered",
+            data: dateWiseData['Recovered'],
+            lineTension: 0,
+            fill: false,
+            borderColor: 'blue'
+        };
+
+        var dataThird = {
+            label: "Desceased",
+            data: dateWiseData['Descesed'],
+            lineTension: 0,
+            fill: false,
+            borderColor: 'yellow'
+        };
+
+        var dataFourth = {
+            label: "Vacinated",
+            data: dateWiseData['Vacinated'],
+            lineTension: 0,
+            fill: false,
+            borderColor: 'green'
+        };
+
+        var speedData = {
+        labels: dateWiseData['labels'],
+        datasets: [dataFirst, dataSecond,dataThird,dataFourth]
+        };
+
+        var chartOptions = {
+            plugins: {
+                title: {
+                    text: 'Chart.js Time Scale',
+                    display: true  
+                 }},
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                        // Luxon format string
+                        tooltipFormat: 'DD-LL-YYYY'
+                        },
+                        title: {
+                        display: true,
+                        text: 'Date'
+                        }},
+                    y: {
+                        title: {
+                        display: true,
+                        text: 'value'
+                        }
+                    }},
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                boxWidth: 20,
+                fontColor: '#FFFDD0',
+                pointStyle: 'triangle',
+                padding: 50},
+                onHover: function(event, legendItem) {
+                      document.getElementById("chart").style.cursor = 'pointer';
+                },
+                onClick: function(e, legendItem) {
+                    var index = legendItem.datasetIndex;
+                    var ci = this.chart;
+                    var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
+
+                    ci.data.datasets.forEach(function(e, i) {
+                        var meta = ci.getDatasetMeta(i);
+
+                        if (i !== index) {
+                        if (!alreadyHidden) {
+                            meta.hidden = meta.hidden === null ? !meta.hidden : null;
+                        } else if (meta.hidden === null) {
+                            meta.hidden = true;
+                        }
+                        } else if (i === index) {
+                        meta.hidden = null;
+                        }
+                    });
+
+                    ci.update();
+                },},
+            };
+                        
+        var lineChart = new Chart(chart, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+        });
+    </script>     
+
+</body>
+</html>
